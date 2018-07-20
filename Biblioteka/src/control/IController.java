@@ -1,10 +1,11 @@
 package control;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IController<T extends Object> {
 
-    List<T> getAll();
+    Map<String,T> getAll();
 
     void persist(T object);
 

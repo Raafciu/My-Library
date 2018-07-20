@@ -48,4 +48,38 @@ public class Library {
             }
         }while(choose!=4);
     }
+    //
+//        Scanner scValue;
+//
+//        System.out.println("Podaj ISBN:");
+//        scValue = new Scanner(System.in);
+//        String ISBN =scValue.nextLine();
+//        book.setIsbn(ISBN);
+//
+//        System.out.println("Podaj tytul:");
+//        scValue = new Scanner(System.in);
+//        String title = scValue.nextLine();
+//        book.setTitle(title);
+//
+//        System.out.println("Podaj autora:");
+//        scValue = new Scanner(System.in);
+//        String author = scValue.nextLine();
+//        book.setAuthor(author);
+//
+//        System.out.println("Podaj ilość stron:");
+//        scValue = new Scanner(System.in);
+//        int pages = scValue.nextInt();
+//        book.setPages(pages);
+//
+//        System.out.println("Podaj kategorie:");
+//        scValue = new Scanner(System.in);
+//        String category = scValue.nextLine();
+//        book.setCategory(category);
+//
+//        System.out.println("Podaj cenę:");
+//        scValue = new Scanner(System.in);
+//        double price = scValue.nextDouble();
+//        book.setPrice(price);
+//
+//        book.setAvailable(true);
 }
