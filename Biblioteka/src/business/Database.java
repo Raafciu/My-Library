@@ -3,6 +3,7 @@ package business;
 import business.book.Book;
 import business.employee.Employee;
 import business.user.User;
+import control.exception.KeyNotFoundException;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.Map;
@@ -24,9 +25,9 @@ public class Database {
         return instance;
     }
 
-    public void persist(Book book) throws KeyAlreadyExistsException {
+    public void persistBook(Book book) {
         if (bookMap.containsKey(book.getIsbn()))
-            throw new KeyAlreadyExistsException("Nie mozna dodac Ksiazki, poniewaz istnieje juz ksiazka o podanym kluczu");
+            throw new KeyAlreadyExistsException("Nie mozna dodac ksiazki, poniewaz istnieje juz taka ksiazka");
         else
             bookMap.put(book.getIsbn(), book);
     }
@@ -35,52 +36,79 @@ public class Database {
         return bookMap;
     }
 
-    public void remove(Book book) throws KeyAlreadyExistsException {
-        if(!bookMap.containsKey(book.getIsbn()))
-            throw new KeyAlreadyExistsException("Nie mozna usunac Ksiazki, poniewaz nie istnieje");
+    public Book getBookById(String isbn) throws KeyNotFoundException {
+        return bookMap.entrySet().stream()
+                .filter(bookEntry -> isbn.equals(bookEntry.getKey()))
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .orElseThrow(KeyNotFoundException::new);
+    }
+
+    public void removeBook(Book book) throws KeyNotFoundException {
+        if (!bookMap.containsKey(book.getIsbn()))
+            throw new KeyNotFoundException();
         else
             bookMap.remove(book.getIsbn(), book);
     }
 
-    public void merge(Book book) {
-        bookMap.replace(book.getIsbn(), book);
+    public void mergeBook(Book book) throws KeyNotFoundException {
+        if (!bookMap.containsKey(book.getIsbn()))
+            throw new KeyNotFoundException();
+        else
+            bookMap.replace(book.getIsbn(), book);
+
     }
 
 
-    public void persist(User user) {
-        if (bookMap.containsKey(user.getPesel()))
-            throw new KeyAlreadyExistsException("Nie mozna dodac uzy, poniewaz istnieje juz ksiazka o podanym kluczu");
+    public void persistUser(User user) {
+        if (userMap.containsKey(user.getPesel()))
+            throw new KeyAlreadyExistsException("Nie mozna dodac uzytkownika, poniewaz istnieje juz taki pracownik");
         else
             userMap.put(user.getPesel(), user);
 
     }
 
-    public Map<String , User> getUsers() {
+    public Map<String, User> getUsers() {
         return userMap;
     }
 
-    public void remove(User user) {
-        userMap.remove(user.getPesel(), user);
+    public void removeUser(User user) throws KeyNotFoundException {
+        if (!userMap.containsKey(user.getPesel()))
+            throw new KeyNotFoundException();
+        else
+            userMap.remove(user.getPesel(), user);
     }
 
-    public void merge(User user) {
-        userMap.replace(user.getPesel(),user);
+    public void mergeUser(User user) throws KeyNotFoundException {
+        if (!userMap.containsKey(user.getPesel()))
+            throw new KeyNotFoundException();
+        else
+            userMap.replace(user.getPesel(), user);
     }
 
 
-    public void persist(Employee employee) {
-        employeeMap.put(employee.getPesel(), employee);
+    public void persistEmployee(Employee employee) {
+        if (employeeMap.containsKey(employee.getPesel()))
+            throw new KeyAlreadyExistsException("Nie mozna dodac pracownika, poniewaz istnieje juz taki pracownik");
+        else
+            employeeMap.put(employee.getPesel(), employee);
     }
 
     public Map<String, Employee> getEmployees() {
         return employeeMap;
     }
 
-    public void remove(Employee employee) {
-        employeeMap.remove(employee.getPesel(), employee);
+    public void removeEmployee(Employee employee) throws KeyNotFoundException {
+        if (!employeeMap.containsKey(employee.getPesel()))
+            throw new KeyNotFoundException();
+        else
+            employeeMap.remove(employee.getPesel(), employee);
     }
 
-    public void merge(Employee employee) {
-        employeeMap.replace(employee.getPesel(),employee);
+    public void mergeEmployee(Employee employee) throws KeyNotFoundException {
+        if (!employeeMap.containsKey(employee.getPesel()))
+            throw new KeyNotFoundException();
+        else
+            employeeMap.replace(employee.getPesel(), employee);
     }
 }

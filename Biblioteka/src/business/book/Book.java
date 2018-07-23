@@ -5,7 +5,8 @@ import java.util.*;
 public class Book {
 
     private String isbn;
-    private String title, author;
+    private String title;
+    private String author;
     private int pages;
     private double price;
     private boolean available;

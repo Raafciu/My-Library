@@ -3,29 +3,48 @@ package control.user;
 import business.Database;
 import business.user.User;
 import control.IController;
+import control.exception.KeyNotFoundException;
 
-import javax.xml.crypto.Data;
-import java.util.List;
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserController implements IController<User> {
+
     @Override
-    public Map<String,User> getAll() {
+    public Map<String, User> getAll() {
         return Database.getInstance().getUsers();
     }
 
     @Override
+    public Optional<User> getById(String id) throws KeyNotFoundException {
+        return null;
+    }
+
+    @Override
     public void persist(User user) {
-        Database.getInstance().persist(user);
+        try {
+            Database.getInstance().persistUser(user);
+        } catch (KeyAlreadyExistsException e) {
+            System.out.println("Nie mozna dodac uzytkownika");
+        }
     }
 
     @Override
     public void merge(User user) {
-        Database.getInstance().merge(user);
+        try {
+            Database.getInstance().mergeUser(user);
+        } catch (KeyNotFoundException e) {
+            System.out.println("Nie mozna edytowac uzytkownika");
+        }
     }
 
     @Override
     public void remove(User user) {
-        Database.getInstance().remove(user);
+        try {
+            Database.getInstance().removeUser(user);
+        } catch (KeyNotFoundException e) {
+            System.out.println("Nie mozna usunac uzytkownika");
+        }
     }
 }

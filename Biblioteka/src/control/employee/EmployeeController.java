@@ -3,29 +3,48 @@ package control.employee;
 import business.Database;
 import business.employee.Employee;
 import control.IController;
+import control.exception.KeyNotFoundException;
 
-import java.util.List;
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.Map;
+import java.util.Optional;
 
 public class EmployeeController implements IController<Employee> {
+
     @Override
-    public Map<String,Employee> getAll() {
+    public Map<String, Employee> getAll() {
         return Database.getInstance().getEmployees();
     }
 
     @Override
-    public void persist(Employee employee) {
-        Database.getInstance().persist(employee);
+    public Optional<Employee> getById(String id) throws KeyNotFoundException {
+        return null;
     }
 
     @Override
-    public void merge(Employee employee) {
-        Database.getInstance().merge(employee);
+    public void persist(Employee employee) {
+        try {
+            Database.getInstance().persistEmployee(employee);
+        } catch (KeyAlreadyExistsException e) {
+            System.out.println("Nie mozna dodac uzytkownika");
+        }
+    }
 
+    @Override
+    public void merge(Employee employee){
+        try {
+            Database.getInstance().mergeEmployee(employee);
+        }catch(KeyNotFoundException e){
+            System.out.println("Nie mozna edytowac pracownika");
+        }
     }
 
     @Override
     public void remove(Employee employee) {
-        Database.getInstance().remove(employee);
+        try {
+            Database.getInstance().removeEmployee(employee);
+        } catch (KeyNotFoundException e) {
+            System.out.println("Nie mozna usunac pracownika");
+        }
     }
 }
