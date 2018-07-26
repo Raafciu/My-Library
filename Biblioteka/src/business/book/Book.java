@@ -12,6 +12,17 @@ public class Book {
     private boolean available;
     private String category;
 
+    public Book() {
+    }
+
+    public Book(String isbn, String author, int pages, double price, boolean available) {
+        this.isbn = isbn;
+        this.author = author;
+        this.pages = pages;
+        this.price = price;
+        this.available = available;
+    }
+
     public String getIsbn() {
         return isbn;
     }

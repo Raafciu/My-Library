@@ -17,7 +17,7 @@ public class EmployeeController implements IController<Employee> {
     }
 
     @Override
-    public Optional<Employee> getById(String id) throws KeyNotFoundException {
+    public Optional<Employee> getById(String id) {
         return null;
     }
 

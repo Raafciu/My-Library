@@ -17,7 +17,7 @@ public class UserController implements IController<User> {
     }
 
     @Override
-    public Optional<User> getById(String id) throws KeyNotFoundException {
+    public Optional<User> getById(String id) {
         return null;
     }
 

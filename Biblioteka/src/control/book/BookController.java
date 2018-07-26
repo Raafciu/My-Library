@@ -17,12 +17,12 @@ public class BookController implements IController<Book> {
     }
 
     @Override
-    public Optional<Book> getById(String isbn) throws KeyNotFoundException {
+    public Optional<Book> getById(String isbn) {
         Optional<Book> optionalBook = Optional.empty();
         try {
             optionalBook = Optional.ofNullable(Database.getInstance().getBookById(isbn));
         } catch (KeyNotFoundException e) {
-            System.out.println("Nie można usunąć książki");
+            System.out.println("Nie można wykonac operacji na  książce");
         }
 
         return optionalBook;
@@ -45,6 +45,7 @@ public class BookController implements IController<Book> {
         } catch (KeyNotFoundException e) {
             System.out.println("Nie można edytować książki");
         }
+        System.out.println("Zedytowałeś książke pomyślnie. Jej parametry: \n"+book.toString());
     }
 
     @Override

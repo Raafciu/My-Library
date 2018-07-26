@@ -1,24 +1,18 @@
 package presentation;
 
-import control.book.BookController;
 import control.exception.KeyNotFoundException;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import static presentation.employee.EmployeeView.employeeView;
 import static presentation.user.UserView.userView;
 
-public class Library extends BookController {
+public class Library {
 
-
-    public static void main(String[] args) throws KeyNotFoundException {
-
-
-
-
+    public static void main(String[] args) throws KeyNotFoundException, InterruptedException {
         int choose;
         do {
-
             System.out.println("*********WITAMY W NASZEJ BIBLIOTECE*********");
             System.out.println("Wybierz tryb:");
             System.out.println("1.Uzytkownik");
@@ -45,4 +39,7 @@ public class Library extends BookController {
         } while (true);
     }
 
+    public static void timeSeparator() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
+    }
 }

@@ -8,11 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import javax.xml.crypto.Data;
-
 import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DatabaseTest {
 
@@ -48,6 +47,8 @@ public class DatabaseTest {
         employee.setLastName("mietkowsi");
         employee.setAge(50);
         employee.setPosition("Kierownik");
+
+
     }
 
     @Test
@@ -92,11 +93,11 @@ public class DatabaseTest {
         Database.getInstance().persistBook(book);
         Database.getInstance().mergeBook(book);
         Book expectedBook = Database.getInstance().getBooks().get(book.getIsbn());
-        assertEquals(expectedBook,book);
+        assertEquals(expectedBook, book);
     }
 
     @Test(expected = KeyNotFoundException.class)
-    public void shouldThrowExceptionDuringMergeBookTest() throws KeyNotFoundException{
+    public void shouldThrowExceptionDuringMergeBookTest() throws KeyNotFoundException {
         Database.getInstance().mergeBook(book);
     }
 
@@ -104,11 +105,11 @@ public class DatabaseTest {
     public void shouldPersistUserTest() {
         Database.getInstance().persistUser(user);
         User expectedUser = Database.getInstance().getUsers().get(user.getPesel());
-        assertEquals(expectedUser,user);
+        assertEquals(expectedUser, user);
     }
 
     @Test(expected = KeyAlreadyExistsException.class)
-    public void shouldThrowExceptionDuringPersistUserTest(){
+    public void shouldThrowExceptionDuringPersistUserTest() {
         Database.getInstance().persistUser(user);
         Database.getInstance().persistUser(user);
     }
@@ -129,7 +130,7 @@ public class DatabaseTest {
         Database.getInstance().persistUser(user);
         Database.getInstance().mergeUser(user);
         User expectedUser = Database.getInstance().getUsers().get(user.getPesel());
-        assertEquals(expectedUser,user);
+        assertEquals(expectedUser, user);
     }
 
     @Test(expected = KeyNotFoundException.class)
@@ -139,14 +140,14 @@ public class DatabaseTest {
     }
 
     @Test
-    public void shouldPersistEmployeeTest(){
+    public void shouldPersistEmployeeTest() {
         Database.getInstance().persistEmployee(employee);
         Employee expectedEmployee = Database.getInstance().getEmployees().get(employee.getPesel());
-        assertEquals(expectedEmployee,employee);
+        assertEquals(expectedEmployee, employee);
     }
 
     @Test(expected = KeyAlreadyExistsException.class)
-    public void shouldThrowExceptionPersistEmployeeTest(){
+    public void shouldThrowExceptionPersistEmployeeTest() {
         Database.getInstance().persistEmployee(employee);
         Database.getInstance().persistEmployee(employee);
     }
@@ -167,11 +168,12 @@ public class DatabaseTest {
         Database.getInstance().persistEmployee(employee);
         Database.getInstance().mergeEmployee(employee);
         Employee expectedEmployee = Database.getInstance().getEmployees().get(employee.getPesel());
-        assertEquals(expectedEmployee,employee);
+        assertEquals(expectedEmployee, employee);
     }
 
     @Test(expected = KeyNotFoundException.class)
     public void shouldThrowExceptionMergeEmployeeTest() throws KeyNotFoundException {
         Database.getInstance().mergeEmployee(employee);
     }
+
 }

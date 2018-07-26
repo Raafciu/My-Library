@@ -8,8 +8,12 @@ import control.book.BookController;
 import control.employee.EmployeeController;
 import control.exception.KeyNotFoundException;
 import control.user.UserController;
+import control.validation.PagesValidator;
+import control.validation.PriceValidator;
+import control.validation.Validator;
 import presentation.Library;
 
+import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -20,7 +24,7 @@ public class EmployeeView {
     private static final BookController bookController = new BookController();
     public static Scanner scValue;
 
-    public static void employeeView() throws KeyNotFoundException {
+    public static void employeeView() throws KeyNotFoundException, InterruptedException {
         int choose;
 
         do {
@@ -38,22 +42,75 @@ public class EmployeeView {
             switch (choose) {
                 case 1:
                     addUser();
+                    Library.timeSeparator();
+
                     break;
                 case 2:
                     addEmployee();
+                    Library.timeSeparator();
                     break;
                 case 3:
                     System.out.println(userController.getAll());
+                    Library.timeSeparator();
                     break;
                 case 4:
                     System.out.println(employeeController.getAll());
+                    Library.timeSeparator();
                     break;
                 case 5:
                     System.out.println("Podaj ISBN ksiazki, którą chcesz edytować:");
                     scValue = new Scanner(System.in);
                     String isbn = scValue.nextLine();
                     Optional<Book> optionalBook = bookController.getById(isbn);
-                    optionalBook.ifPresent(bookController::merge);
+                    optionalBook.ifPresent(book -> {
+                        System.out.println("Podaj tytul:");
+                        scValue = new Scanner(System.in);
+                        String title = scValue.nextLine();
+                        book.setTitle(title);
+
+                        System.out.println("Podaj autora:");
+                        scValue = new Scanner(System.in);
+                        String author = scValue.nextLine();
+                        book.setAuthor(author);
+
+                        boolean pagesFlag = false;
+                        do {
+                            try {
+                                System.out.println("Podaj ilość stron:");
+                                scValue = new Scanner(System.in);
+                                int pages = scValue.nextInt();
+                                Validator validator = new PagesValidator();
+                                pagesFlag = validator.validate(pages);
+                                book.setPages(pages);
+                            } catch (InputMismatchException e) {
+                                System.out.println("Integers only, please");
+                                scValue.nextLine();
+                            }
+                        } while (!pagesFlag);
+
+                        System.out.println("Podaj kategorie:");
+                        scValue = new Scanner(System.in);
+                        String category = scValue.nextLine();
+                        book.setCategory(category);
+
+                        pagesFlag = false;
+                        do {
+                            try {
+                                System.out.println("Podaj cenę: x,xx");
+                                scValue = new Scanner(System.in);
+                                double price = scValue.nextDouble();
+                                Validator validator = new PriceValidator();
+                                pagesFlag = validator.validate(price);
+                                book.setPrice(price);
+                            } catch (InputMismatchException e) {
+                                System.out.println("Check format");
+                                scValue.nextLine();
+                            }
+                        } while (!pagesFlag);
+                        book.setAvailable(true);
+                        bookController.merge(book);
+                    });
+                    Library.timeSeparator();
                     break;
                 case 6:
                     Library.main(null);

@@ -1,15 +1,13 @@
 package control;
 
-import control.exception.KeyNotFoundException;
-
 import java.util.Map;
 import java.util.Optional;
 
 public interface IController<T extends Object> {
 
-    Map<String,T> getAll();
+    Map<String, T> getAll();
 
-    Optional<T> getById(String id) throws KeyNotFoundException;
+    Optional<T> getById(String id);
 
     void persist(T object);
 
