@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+            http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="biblioPU" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistenceProvider</provider>
+        <jta-data-source>jdbc/biblioDS</jta-data-source>
+
+        <class>business.address.Address</class>
+        <class>business.eventLog.EventLog</class>
+        <class>business.group.Group</class>
+        <class>business.category.Category</class>
+        <class>business.book.Book</class>
+        <class>business.role.Role</class>
+        <class>business.position.Position</class>
+        <class>business.user.User</class>
+        <class>business.borrow.Borrow</class>
+        <class>business.returnBook.Return</class>
+
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <property name="hibernate.session_factory_name" value="hibernateSessionFactory"/>
+            <property name="current_session_context_class" value="jta"/>
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+            <property name="hibernate.cache.use_second_level_cache"
+                      value="false"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>
