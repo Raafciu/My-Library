@@ -5,15 +5,16 @@ import util.converter.YesNoEnumConverter;
 import util.enums.YesNoEnum;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@SequenceGenerator(name = "book_seq", sequenceName = "book_seq", allocationSize = 1)
+@SequenceGenerator(name = "ksiazka_seq", sequenceName = "ksiazka_seq", allocationSize = 1)
 @Table(name = "ksiazka")
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ksiazka_seq")
     @Column(name = "book_id", nullable = false, unique = true, precision = 9)
     private long id;
 
@@ -29,8 +30,8 @@ public class Book {
     @Column(name = "ilosc_stron", precision = 4)
     private int pages;
 
-    @Column(name = "cena", precision = 7, scale = 2)
-    private double price;
+    @Column(name = "cena", precision = 9, scale = 2)
+    private BigDecimal price;
 
     @Column(name = "dostepnosc", length = 1)
     @Convert(converter = YesNoEnumConverter.class)
@@ -80,11 +81,11 @@ public class Book {
         this.pages = pages;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -111,10 +112,10 @@ public class Book {
         Book book = (Book) o;
         return id == book.id &&
                 pages == book.pages &&
-                Double.compare(book.price, price) == 0 &&
                 Objects.equals(isbn, book.isbn) &&
                 Objects.equals(title, book.title) &&
                 Objects.equals(author, book.author) &&
+                Objects.equals(price, book.price) &&
                 isAvailable == book.isAvailable &&
                 Objects.equals(bookCategory, book.bookCategory);
     }

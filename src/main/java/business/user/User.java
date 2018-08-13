@@ -6,6 +6,7 @@ import business.position.Position;
 import business.role.Role;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -46,7 +47,7 @@ public class User {
     @JoinTable(name = "uzytkownik_grupa",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "grupa_id", referencedColumnName = "grupa_id"))
-    private Group group;
+    private List<Group> group;
 
     public long getId() {
         return id;
@@ -112,11 +113,11 @@ public class User {
         this.address = address;
     }
 
-    public Group getGroup() {
+    public List<Group> getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public void setGroup(List<Group> group) {
         this.group = group;
     }
 

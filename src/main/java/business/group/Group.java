@@ -16,7 +16,6 @@ public class Group {
     @Column(name = "nazwa")
     private String groupName;
 
-
     public long getId() {
         return id;
     }

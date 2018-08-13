@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Properties;
 import javax.naming.InitialContext;
@@ -70,7 +71,7 @@ public class EJBTester {
 
                     book.setIsbn("1234567890123");
                     book.setTitle("Igrzyska Śmierci");
-                    book.setPrice(50.23);
+                    book.setPrice(new BigDecimal("55.55"));
                     book.setPages(378);
                     book.setAuthor("Suzanne Collins");
                     book.setBookCategory(bookCategory);

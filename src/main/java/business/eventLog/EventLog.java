@@ -1,6 +1,7 @@
 package business.eventLog;
 
 import business.user.User;
+import util.converter.EventLogEnumConverter;
 import util.enums.EventLogEnum;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class EventLog {
     private User user;
 
     @Column(name = "akcja", length = 20, nullable = false)
+    @Convert(converter = EventLogEnumConverter.class)
     private EventLogEnum akcja;
 
     public EventLogKey getId() {

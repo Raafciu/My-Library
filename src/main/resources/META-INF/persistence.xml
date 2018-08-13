@@ -3,24 +3,11 @@
              xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-             version="2.1">
+             version="2.1" >
 
     <persistence-unit name="biblioPU" transaction-type="JTA">
-        <provider>org.hibernate.ejb.HibernatePersistenceProvider</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jdbc/biblioDS</jta-data-source>
-
-        <class>business.address.Address</class>
-        <class>business.eventLog.EventLog</class>
-        <class>business.group.Group</class>
-        <class>business.category.Category</class>
-        <class>business.book.Book</class>
-        <class>business.role.Role</class>
-        <class>business.position.Position</class>
-        <class>business.user.User</class>
-        <class>business.borrow.Borrow</class>
-        <class>business.returnBook.Return</class>
-
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>

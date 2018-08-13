@@ -12,9 +12,37 @@
 
     <properties>
         <maven.test.skip>true</maven.test.skip>
+
         <java.version>1.8</java.version>
         <java-ee.version>7.0</java-ee.version>
+        <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
+
+        <hibernate.version>4.3.5.Final</hibernate.version>
+        <hibernate-validator.version>5.1.3.Final</hibernate-validator.version>
+        <ojdbc6.version>11.2.0.2.0</ojdbc6.version>
+
+        <vaadin.version>7.7.6</vaadin.version>
+        <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+        <vaadin-cdi.version>1.0.3</vaadin-cdi.version>
+        <viritin.version>1.61</viritin.version>
+        <vaadin-lazy-query-container.version>7.6.1.3</vaadin-lazy-query-container.version>
+        <filtering-table.version>0.9.15.v7</filtering-table.version>
+        <maven-war-plugin.version>2.6</maven-war-plugin.version>
+
+        <junit.version>4.12</junit.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-bom</artifactId>
+                <version>${vaadin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- JAVA EE -->
@@ -25,43 +53,181 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- HIBERNATE -->
+        <!-- SERVLET API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-        <!-- JPA -->
+        <!-- HIBERNATE -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!-- VAADIN -->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiled</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-shared</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-cdi</artifactId>
+            <version>${vaadin-cdi.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.vaadin</groupId>
+            <artifactId>viritin</artifactId>
+            <version>${viritin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>filteringtable</artifactId>
+            <version>${filtering-table.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.vaadin.addons.lazyquerycontainer</groupId>
+            <artifactId>vaadin-lazyquerycontainer</artifactId>
+            <version>${vaadin-lazy-query-container.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- ORACLE -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>${ojdbc6.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <finalName>${project.name}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
 
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/resources</directory>
-                            <!-- override the destination directory for this resource -->
-                            <targetPath>META-INF</targetPath>
-                            <includes>
-                                <include>persistence.xml</include>
-                            </includes>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-        </plugins>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+
+            <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+
+                <!-- VAADIN PLUGIN -->
+                <plugin>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>vaadin-maven-plugin</artifactId>
+                    <version>${vaadin.plugin.version}</version>
+                    <configuration>
+                        <extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+                        <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
+                        <draftCompile>false</draftCompile>
+                        <compileReport>false</compileReport>
+                        <style>OBF</style>
+                        <strict>true</strict>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>update-widgetset</goal>
+                                <goal>compile-theme</goal>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- VAADIN CLEAN PLUGIN -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.6.1</version>
+                    <configuration>
+                        <filesets>
+                            <fileset>
+                                <directory>src/main/webapp/VAADIN/themes</directory>
+                                <includes>
+                                    <include>**/styles.scss.cache</include>
+                                </includes>
+                            </fileset>
+                        </filesets>
+                    </configuration>
+                </plugin>
+
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war-plugin.version}</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                        <!-- Exclude some unnecessary files generated by the GWT compiler. -->
+                        <packagingExcludes>VAADIN/gwt-unitCache/**, VAADIN/widgetsets/WEB-INF/**</packagingExcludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+
     </build>
 
     <profiles>
@@ -74,7 +240,7 @@
                 <dependency>
                     <groupId>junit</groupId>
                     <artifactId>junit</artifactId>
-                    <version>4.12</version>
+                    <version>${junit.version}</version>
                 </dependency>
             </dependencies>
         </profile>
@@ -89,6 +255,28 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+
+        <repository>
+            <id>third-repo</id>
+            <url>http://repo2.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>vaadin</id>
+            <name>Vaadin Add-ons Repository</name>
+            <url>http://vaadin.com/nexus/content/repositories/vaadin-addons/</url>
+        </repository>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+        <repository>
+            <id>datanucleus</id>
+            <url>http://www.datanucleus.org/downloads/maven2/</url>
         </repository>
     </repositories>
 
