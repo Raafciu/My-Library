@@ -1,16 +1,16 @@
 package presentation;
 
-import business.user.User;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.*;
-import control.user.UserPresenter;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+import presentation.page.UserPage;
 import util.constans.BibliotekaUtil;
 
-import javax.inject.Inject;
-import java.util.List;
 import java.util.Locale;
 
 @CDIUI("")
@@ -19,42 +19,63 @@ import java.util.Locale;
 public class BibliotekaUI extends UI {
 
 
-    @Inject
-    private UserPresenter userPresenter;
+    private ComponentContainerViewDisplay viewDisplay;
+    private Navigator navigator;
 
     private VerticalLayout layout;
-    private int clickCounter = 0;
-    private Label clickCounterLabel;
 
     @Override
     protected void init(VaadinRequest request) {
+        Locale locale = Locale.UK;
+        UI.getCurrent().setLocale(locale);
+
         layout = new VerticalLayout();
-        layout.setMargin(true);
         layout.setSpacing(true);
         setContent(layout);
+        initNavigator();
+    }
 
-        layout.addComponent(new Label("Hello World!"));
-        layout.addComponent(new Label("Greetings from server."));
-        layout.addComponent(new Label("I have "
-                + Runtime.getRuntime().availableProcessors()
-                + " processors and "
-                + (Runtime.getRuntime().totalMemory() / 1000000)
-                + " MB total memory."));
+    private void initNavigator() {
+        viewDisplay = new ComponentContainerViewDisplay(layout);
+        navigator = new Navigator(UI.getCurrent(), viewDisplay);
+        navigator.addView(UserPage.VIEW_ID, new UserPage());
 
-        Button button = new Button("Click Me");
-        button.addClickListener((Button.ClickListener) event -> {
-            clickCounter++;
-            clickCounterLabel.setValue("Clicks: " + clickCounter);
-            Notification.show("Thank you for clicking.");
-        });
-
-        Button encjaButton = new Button("Pobierz użytkowników");
-        encjaButton.addClickListener(clickEvent -> {
-            List<User> userList = userPresenter.getAllUsers();
-            userList.forEach(user -> layout.addComponent(new Label(user.toString())));
-        });
-
-        layout.addComponents(button, encjaButton);
-        layout.addComponent(clickCounterLabel = new Label("Clicks: 0"));
+        UI.getCurrent().setNavigator(navigator);
+        UI.getCurrent().getNavigator().navigateTo(UserPage.VIEW_ID);
     }
 }
+
+
+//
+//private int clickCounter = 0;
+//    private Label clickCounterLabel;
+//
+//    VerticalLayout layout = new VerticalLayout();
+//        layout.setMargin(true);
+//        layout.setSpacing(true);
+//    setContent(layout);
+//
+//        layout.addComponent(new Label("Hello World!"));
+//        layout.addComponent(new Label("Greetings from server."));
+//        layout.addComponent(new Label("I have "
+//                                              + Runtime.getRuntime().availableProcessors()
+//                + " processors and "
+//                        + (Runtime.getRuntime().totalMemory() / 1000000)
+//            + " MB total memory."));
+//
+//    Button button = new Button("Click Me");
+//        button.addClickListener((Button.ClickListener) event -> {
+//        clickCounter++;
+//        clickCounterLabel.setValue("Clicks: " + clickCounter);
+//        Notification.show("Thank you for clicking.");
+//    });
+//
+//    Button encjaButton = new Button("Pobierz użytkowników");
+//        encjaButton.addClickListener(clickEvent -> {
+//        List<User> userList = userPresenter.();
+//        userList.forEach(user -> layout.addComponent(new Label(user.toString())));
+//    });
+//
+//        layout.addComponents(button, encjaButton);
+//        layout.addComponent(clickCounterLabel = new Label("Clicks: 0"));
+//}

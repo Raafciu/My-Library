@@ -15,6 +15,11 @@
         </init-param>
     </servlet>
 
+    <context-param>
+        <param-name>PARAMETER_ENCODING</param-name>
+        <param-value>UTF-8</param-value>
+    </context-param>
+
     <servlet-mapping>
         <servlet-name>BibliotekaServlet</servlet-name>
         <url-pattern>/*</url-pattern>
