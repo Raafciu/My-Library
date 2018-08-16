@@ -17,7 +17,7 @@ public class UserPage extends VerticalLayout implements View {
     @Inject
     private UserPresenter userPresenter;
 
-    public void init() {
+    private void init() {
         UserLayout userLayout = new UserLayout(userPresenter);
         addComponent(userLayout);
     }
