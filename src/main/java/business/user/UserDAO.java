@@ -13,11 +13,6 @@ public class UserDAO implements ICRUDOperation<User> {
     @PersistenceContext(unitName = "biblioPU")
     private EntityManager entityManager;
 
-    public List<User> getAllUsers() {
-        return entityManager.createQuery("FROM User", User.class)
-                .getResultList();
-    }
-
     @Override
     public List<User> getAll() {
         return entityManager.createQuery("FROM User", User.class).getResultList();

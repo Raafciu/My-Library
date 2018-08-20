@@ -3,6 +3,7 @@ package presentation;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.cdi.CDIViewProvider;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
 import com.vaadin.server.VaadinRequest;
@@ -11,13 +12,15 @@ import com.vaadin.ui.VerticalLayout;
 import presentation.page.UserPage;
 import util.constans.BibliotekaUtil;
 
-import java.util.Locale;
+import javax.inject.Inject;
 
 @CDIUI("")
 @Theme(BibliotekaUtil.THEME)
 @Widgetset(BibliotekaUtil.WIDGETSET)
 public class BibliotekaUI extends UI {
 
+    @Inject
+    private CDIViewProvider cdiViewProvider;
 
     private ComponentContainerViewDisplay viewDisplay;
     private Navigator navigator;
@@ -26,9 +29,6 @@ public class BibliotekaUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        Locale locale = Locale.UK;
-        UI.getCurrent().setLocale(locale);
-
         layout = new VerticalLayout();
         layout.setSpacing(true);
         setContent(layout);
@@ -38,6 +38,7 @@ public class BibliotekaUI extends UI {
     private void initNavigator() {
         viewDisplay = new ComponentContainerViewDisplay(layout);
         navigator = new Navigator(UI.getCurrent(), viewDisplay);
+        navigator.addProvider(cdiViewProvider);
         navigator.addView(UserPage.VIEW_ID, new UserPage());
 
         UI.getCurrent().setNavigator(navigator);

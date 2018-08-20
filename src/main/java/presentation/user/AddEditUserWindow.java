@@ -83,6 +83,8 @@ public class AddEditUserWindow extends Window {
 
     private void addListeners() {
         confirmWindowButton.addClickListener(event -> {
+
+            userPresenter.merge(user);
             this.close();
             Notification.show("Dziekujemy za wypelnienie formularza!");
         });
