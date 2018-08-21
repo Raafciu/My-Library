@@ -4,11 +4,11 @@ import business.user.User;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
 import control.user.UserPresenter;
+import presentation.user.generator.TableGroupGenerator;
 
 public class UserTable extends Table {
 
     private final UserPresenter userPresenter;
-
     private static final String CAPTION = "Użytkownicy";
 
     private static final String USER_ID = "id";
@@ -29,7 +29,7 @@ public class UserTable extends Table {
     private static final String POSITION_CAPTION = "Stanowisko";
     private static final String ROLE_CAPTION = "Rola";
     private static final String ADDRESS_CAPTION = "Adres";
-    private static final String GROUP_CAPTION = "Grupa";
+    private static final String GROUP_CAPTION = "Grupy";
 
     private BeanItemContainer<User> container;
 
@@ -48,6 +48,7 @@ public class UserTable extends Table {
         container = new BeanItemContainer<>(User.class);
         container.addNestedContainerProperty(POSITION);
         container.addNestedContainerProperty(ROLE);
+        super.addGeneratedColumn(GROUP, new TableGroupGenerator());
         container.addAll(userPresenter.getAll());
         setContainerDataSource(container);
 
@@ -79,6 +80,7 @@ public class UserTable extends Table {
                 ADDRESS_CAPTION,
                 GROUP_CAPTION
         );
+
     }
 
     public void refresh() {

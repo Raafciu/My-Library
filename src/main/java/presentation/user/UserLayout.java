@@ -51,8 +51,6 @@ public class UserLayout extends VerticalLayout {
         persistButton.addClickListener(clickEvent -> {
             window = new AddEditUserWindow(userPresenter, this);
             getUI().addWindow(window);
-            //userPresenter.persist();
-            //Notification.show("Persist new User");
         });
 
         mergeButton.addClickListener(clickEvent -> {
@@ -61,7 +59,9 @@ public class UserLayout extends VerticalLayout {
             getUI().addWindow(window);
         });
 
-        removeButton.addClickListener(clickEvent -> Notification.show("Remove new User"));
+        removeButton.addClickListener(clickEvent -> {
+            refreshTable();
+        });
 
         userTable.addValueChangeListener(event -> {
             Optional<Object> optional = Optional.ofNullable(userTable.getValue());

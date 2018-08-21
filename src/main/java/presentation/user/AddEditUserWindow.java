@@ -5,11 +5,16 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import control.user.UserPresenter;
+import util.validator.AgeValidator;
+import util.validator.NameValidator;
+import util.validator.PeselValidator;
 
 public class AddEditUserWindow extends Window {
 
     private static final String ADD_CAPTION = "Dodaj użytkownika";
     private static final String EDIT_CAPTION = "Edytuj użytkownika";
+    private static final String WRONG_DATA = "Uzupełnij Dane";
+    private static final String CONFIRM_MESSAGE = "Czy chcesz zatwierdzic formularz?";
 
     private final UserPresenter userPresenter;
     private final UserLayout userLayout;
@@ -58,12 +63,29 @@ public class AddEditUserWindow extends Window {
         horizontalFormWindowContent = new HorizontalLayout();
 
         peselField = new TextField("Pesel");
+
         firstNameField = new TextField("Imie");
         lastNameField = new TextField("Nazwisko");
         ageField = new TextField("Wiek");
 
+        initValidator();
+
         confirmWindowButton = new Button("Zatwierdz", FontAwesome.CHECK);
         cancelWindowButton = new Button("Anuluj", FontAwesome.REMOVE);
+    }
+
+    private void initValidator() {
+        peselField.addValidator(new PeselValidator());
+        peselField.setImmediate(true);
+
+        firstNameField.addValidator(new NameValidator());
+        firstNameField.setImmediate(true);
+
+        lastNameField.addValidator(new NameValidator());
+        lastNameField.setImmediate(true);
+
+        ageField.addValidator(new AgeValidator());
+        ageField.setImmediate(true);
     }
 
     private void initLayout() {
@@ -83,10 +105,17 @@ public class AddEditUserWindow extends Window {
 
     private void addListeners() {
         confirmWindowButton.addClickListener(event -> {
-
-            userPresenter.merge(user);
-            this.close();
-            Notification.show("Dziekujemy za wypelnienie formularza!");
+            if (peselField.isValid() && firstNameField.isValid()
+                    && lastNameField.isValid() && ageField.isValid()) {
+                try {
+                    userPresenter.persist(user);
+                    this.close();
+                    Notification.show("Dziekujemy za wypelnienie formularza!");
+                } catch (Exception e) {
+                    Notification.show("Błąd podczas dodawania Użytkownika: " + e.getMessage(), Notification.Type.ERROR_MESSAGE);
+                }
+            } else
+                Notification.show(WRONG_DATA, Notification.Type.ERROR_MESSAGE);
         });
 
         cancelWindowButton.addClickListener(event -> super.close());
