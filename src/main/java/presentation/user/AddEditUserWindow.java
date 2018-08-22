@@ -9,6 +9,8 @@ import util.validator.AgeValidator;
 import util.validator.NameValidator;
 import util.validator.PeselValidator;
 
+import java.util.Optional;
+
 public class AddEditUserWindow extends Window {
 
     private static final String ADD_CAPTION = "Dodaj użytkownika";
@@ -63,7 +65,6 @@ public class AddEditUserWindow extends Window {
         horizontalFormWindowContent = new HorizontalLayout();
 
         peselField = new TextField("Pesel");
-
         firstNameField = new TextField("Imie");
         lastNameField = new TextField("Nazwisko");
         ageField = new TextField("Wiek");
@@ -108,11 +109,18 @@ public class AddEditUserWindow extends Window {
             if (peselField.isValid() && firstNameField.isValid()
                     && lastNameField.isValid() && ageField.isValid()) {
                 try {
-                    userPresenter.persist(user);
+                    Optional<User> optionalUser = Optional.ofNullable(user);
+                    if (!optionalUser.isPresent()) {
+                        User newUser = prepareNewUser();
+                        userPresenter.persist(newUser);
+                    } else {
+                        user = mergeUser();
+                        userPresenter.merge(user);
+                    }
                     this.close();
                     Notification.show("Dziekujemy za wypelnienie formularza!");
                 } catch (Exception e) {
-                    Notification.show("Błąd podczas dodawania Użytkownika: " + e.getMessage(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Błąd podczas przetwarzania : " + e.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
             } else
                 Notification.show(WRONG_DATA, Notification.Type.ERROR_MESSAGE);
@@ -120,6 +128,27 @@ public class AddEditUserWindow extends Window {
 
         cancelWindowButton.addClickListener(event -> super.close());
     }
+
+
+    private User prepareNewUser() {
+        User newUser = new User();
+        newUser.setPesel(peselField.getValue());
+        newUser.setFirstName(firstNameField.getValue());
+        newUser.setLastName(lastNameField.getValue());
+        newUser.setAge(Integer.parseInt(ageField.getValue()));
+
+        return newUser;
+    }
+
+    private User mergeUser() {
+        user.setPesel(peselField.getValue());
+        user.setFirstName(firstNameField.getValue());
+        user.setLastName(lastNameField.getValue());
+        user.setAge(Integer.parseInt(ageField.getValue()));
+
+        return user;
+    }
+
 
     private void fillFields() {
         peselField.setValue(user.getPesel());
@@ -130,6 +159,7 @@ public class AddEditUserWindow extends Window {
 
     @Override
     public void close() {
+        userLayout.disableButtonsOnWindowClose();
         userLayout.refreshTable();
         super.close();
     }

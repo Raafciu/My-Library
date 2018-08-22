@@ -1,38 +1,32 @@
 package business.user;
 
-import util.interfaces.ICRUDOperation;
-
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@RequestScoped
-public class UserDAO implements ICRUDOperation<User> {
+@Stateless
+public class UserDAO {
 
     @PersistenceContext(unitName = "biblioPU")
     private EntityManager entityManager;
 
-    @Override
     public List<User> getAll() {
         return entityManager.createQuery("FROM User", User.class).getResultList();
     }
 
-    @Override
     public void persist(User user) {
         entityManager.persist(user);
         entityManager.flush();
     }
 
-    @Override
     public void merge(User user) {
         entityManager.merge(user);
         entityManager.flush();
     }
 
-    @Override
     public void remove(User user) {
-        entityManager.remove(user);
+        entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
         entityManager.flush();
     }
 }

@@ -60,7 +60,14 @@ public class UserLayout extends VerticalLayout {
         });
 
         removeButton.addClickListener(clickEvent -> {
+            User user = (User) userTable.getValue();
+            try {
+                userPresenter.remove(user);
+            } catch (Exception e) {
+                Notification.show("Błąd podczas przetwarzania : " + e.getMessage(), Notification.Type.ERROR_MESSAGE);
+            }
             refreshTable();
+            disableButtonsOnWindowClose();
         });
 
         userTable.addValueChangeListener(event -> {
@@ -94,5 +101,10 @@ public class UserLayout extends VerticalLayout {
 
     void refreshTable() {
         userTable.refresh();
+    }
+
+    void disableButtonsOnWindowClose() {
+        mergeButton.setEnabled(false);
+        removeButton.setEnabled(false);
     }
 }

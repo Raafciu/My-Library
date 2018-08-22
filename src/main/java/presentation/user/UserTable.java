@@ -4,6 +4,7 @@ import business.user.User;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
 import control.user.UserPresenter;
+import presentation.user.generator.TableAddressGenerator;
 import presentation.user.generator.TableGroupGenerator;
 
 public class UserTable extends Table {
@@ -11,7 +12,6 @@ public class UserTable extends Table {
     private final UserPresenter userPresenter;
     private static final String CAPTION = "Użytkownicy";
 
-    private static final String USER_ID = "id";
     private static final String PESEL = "pesel";
     private static final String FIRSTNAME = "firstName";
     private static final String LASTNAME = "lastName";
@@ -21,7 +21,6 @@ public class UserTable extends Table {
     private static final String ADDRESS = "address";
     private static final String GROUP = "group";
 
-    private static final String USER_ID_CAPTION = "ID";
     private static final String PESEL_CAPTION = "pesel";
     private static final String FIRSTNAME_CAPTION = "Imie";
     private static final String LASTNAME_CAPTION = "Naziwsko";
@@ -49,6 +48,7 @@ public class UserTable extends Table {
         container.addNestedContainerProperty(POSITION);
         container.addNestedContainerProperty(ROLE);
         super.addGeneratedColumn(GROUP, new TableGroupGenerator());
+        super.addGeneratedColumn(ADDRESS, new TableAddressGenerator());
         container.addAll(userPresenter.getAll());
         setContainerDataSource(container);
 
@@ -58,7 +58,6 @@ public class UserTable extends Table {
 
     private void initColumns() {
         setVisibleColumns(
-                USER_ID,
                 PESEL,
                 FIRSTNAME,
                 LASTNAME,
@@ -70,7 +69,6 @@ public class UserTable extends Table {
         );
 
         setColumnHeaders(
-                USER_ID_CAPTION,
                 PESEL_CAPTION,
                 FIRSTNAME_CAPTION,
                 LASTNAME_CAPTION,
