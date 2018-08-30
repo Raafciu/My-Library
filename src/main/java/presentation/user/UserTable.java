@@ -4,8 +4,8 @@ import business.user.User;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
 import control.user.UserPresenter;
-import presentation.user.generator.TableAddressGenerator;
-import presentation.user.generator.TableGroupGenerator;
+import util.generator.TableAddressGenerator;
+import util.generator.TableGroupGenerator;
 
 public class UserTable extends Table {
 
@@ -49,7 +49,7 @@ public class UserTable extends Table {
         container.addNestedContainerProperty(ROLE);
         super.addGeneratedColumn(GROUP, new TableGroupGenerator());
         super.addGeneratedColumn(ADDRESS, new TableAddressGenerator());
-        container.addAll(userPresenter.getAll());
+        container.addAll(userPresenter.getAllUsers());
         setContainerDataSource(container);
 
         initColumns();
@@ -83,6 +83,6 @@ public class UserTable extends Table {
 
     public void refresh() {
         container.removeAllItems();
-        container.addAll(userPresenter.getAll());
+        container.addAll(userPresenter.getAllUsers());
     }
 }

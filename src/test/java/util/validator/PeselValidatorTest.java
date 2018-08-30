@@ -2,6 +2,7 @@ package util.validator;
 
 import com.vaadin.data.Validator;
 import org.junit.Test;
+import util.validator.user.PeselValidator;
 
 public class PeselValidatorTest {
 

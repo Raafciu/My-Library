@@ -39,8 +39,8 @@ public class User {
     @JoinColumn(name = "rola_id", referencedColumnName = "rola_id")
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adres_id", referencedColumnName = "adres_id", unique = true, nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "adres_id", referencedColumnName = "adres_id", unique = true)
     private Address address;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

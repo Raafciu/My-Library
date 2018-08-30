@@ -73,9 +73,11 @@ public class UserLayout extends VerticalLayout {
         userTable.addValueChangeListener(event -> {
             Optional<Object> optional = Optional.ofNullable(userTable.getValue());
             if (optional.isPresent()) {
+                persistButton.setEnabled(false);
                 mergeButton.setEnabled(true);
                 removeButton.setEnabled(true);
             } else {
+                persistButton.setEnabled(true);
                 mergeButton.setEnabled(false);
                 removeButton.setEnabled(false);
             }
@@ -104,6 +106,7 @@ public class UserLayout extends VerticalLayout {
     }
 
     void disableButtonsOnWindowClose() {
+        persistButton.setEnabled(true);
         mergeButton.setEnabled(false);
         removeButton.setEnabled(false);
     }

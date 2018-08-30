@@ -1,5 +1,11 @@
 package control.user;
 
+import business.address.Address;
+import business.address.AddressDAO;
+import business.position.Position;
+import business.position.PositionDAO;
+import business.role.Role;
+import business.role.RoleDAO;
 import business.user.User;
 import business.user.UserDAO;
 
@@ -11,7 +17,16 @@ public class UserPresenter {
     @Inject
     private UserDAO userDAO;
 
-    public List<User> getAll() {
+    @Inject
+    private PositionDAO positionDAO;
+
+    @Inject
+    private RoleDAO roleDAO;
+
+    @Inject
+    private AddressDAO addressDAO;
+
+    public List<User> getAllUsers() {
         return userDAO.getAll();
     }
 
@@ -25,5 +40,17 @@ public class UserPresenter {
 
     public void remove(User user) {
         userDAO.remove(user);
+    }
+
+    public List<Position> getAllPositions() {
+        return positionDAO.getAll();
+    }
+
+    public List<Role> getAllRoles() {
+        return roleDAO.getAll();
+    }
+
+    public List<Address> getAllAddresses(){
+        return addressDAO.getAll();
     }
 }

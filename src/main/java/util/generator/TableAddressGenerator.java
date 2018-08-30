@@ -1,4 +1,4 @@
-package presentation.user.generator;
+package util.generator;
 
 import business.address.Address;
 import business.user.User;
@@ -20,9 +20,9 @@ public class TableAddressGenerator implements Table.ColumnGenerator {
         if (optionalAddress.isPresent()) {
             Address address = optionalAddress.get();
             labelContent = address.getCountry() +
-                    " ul. " + address.getStreet() +
+                    ", ul. " + address.getStreet() +
                     " " + address.getNumberOfBuilding() +
-                    " " + address.getPostalCode() +
+                    ", " + address.getPostalCode() +
                     " " + address.getCity();
         } else
             labelContent = "Brak";

@@ -2,8 +2,7 @@ package util.validator;
 
 import com.vaadin.data.Validator;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import util.validator.user.AgeValidator;
 
 public class AgeValidatorTest {
 

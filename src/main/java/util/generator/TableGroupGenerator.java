@@ -1,4 +1,4 @@
-package presentation.user.generator;
+package util.generator;
 
 import business.group.Group;
 import business.user.User;
