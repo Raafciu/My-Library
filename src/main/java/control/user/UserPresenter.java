@@ -2,6 +2,8 @@ package control.user;
 
 import business.address.Address;
 import business.address.AddressDAO;
+import business.group.Group;
+import business.group.GroupDAO;
 import business.position.Position;
 import business.position.PositionDAO;
 import business.role.Role;
@@ -25,6 +27,9 @@ public class UserPresenter {
 
     @Inject
     private AddressDAO addressDAO;
+
+    @Inject
+    private GroupDAO groupDAO;
 
     public List<User> getAllUsers() {
         return userDAO.getAll();
@@ -52,5 +57,9 @@ public class UserPresenter {
 
     public List<Address> getAllAddresses(){
         return addressDAO.getAll();
+    }
+
+    public List<Group> getAllGroups(){
+        return groupDAO.getAll();
     }
 }

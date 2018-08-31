@@ -1,6 +1,7 @@
 package presentation.user;
 
 import business.address.Address;
+import business.group.Group;
 import business.position.Position;
 import business.role.Role;
 import business.user.User;
@@ -23,15 +24,10 @@ public class AddEditUserWindow extends Window {
     private static final String ADD_CAPTION = "Dodaj użytkownika";
     private static final String EDIT_CAPTION = "Edytuj użytkownika";
     private static final String WRONG_DATA = "Uzupełnij Dane";
-    private static final String CONFIRM_MESSAGE = "Czy chcesz zatwierdzic formularz?";
-    private static final String ADDRESS_CAPTION = "Adres:";
 
     private final UserPresenter userPresenter;
     private final UserLayout userLayout;
     private User user;
-
-    List<Position> positionList;
-    List<Role> roleList;
 
     private HorizontalLayout buttonWindowContent;
     private HorizontalLayout horizontalFormWindowContent;
@@ -53,6 +49,11 @@ public class AddEditUserWindow extends Window {
 
     private ComboBox positionComboBox;
     private ComboBox roleComboBox;
+
+    List<Position> positionList;
+    List<Role> roleList;
+    List<Group> groupList;
+    OptionGroup optionGroup;
 
     private Button cancelWindowButton;
     private Button confirmWindowButton;
@@ -113,6 +114,11 @@ public class AddEditUserWindow extends Window {
         roleComboBox.addItems(roleList);
         roleList.forEach(role -> roleComboBox.setItemCaption(role, role.getRoleName()));
 
+        groupList = userPresenter.getAllGroups();
+        optionGroup = new OptionGroup("Grupy");
+        optionGroup.setMultiSelect(true);
+        optionGroup.addItems(groupList);
+        groupList.forEach(group -> optionGroup.setItemCaption(group, group.getGroupName()));
     }
 
     private void initAddressFormComponents() {
@@ -125,6 +131,7 @@ public class AddEditUserWindow extends Window {
         numberOfBuildingField = new TextField("Numer Budynku");
         postalCodeField = new TextField("Kod Pocztowy");
     }
+
 
     private void initValidator() {
         peselField.addValidator(new PeselValidator());
@@ -163,7 +170,7 @@ public class AddEditUserWindow extends Window {
         horizontalFormWindowContent.addComponent(formWindowContent);
         horizontalFormWindowContent.setMargin(new MarginInfo(false, true, false, false));
 
-        addressFormWindowContent.addComponents(countryField, cityField, streetField, numberOfBuildingField, postalCodeField);
+        addressFormWindowContent.addComponents(countryField, cityField, streetField, numberOfBuildingField, postalCodeField, optionGroup);
         horizontaladdressFormWindowContent.addComponent(addressFormWindowContent);
         horizontaladdressFormWindowContent.setMargin(new MarginInfo(false, false, false, true));
 
@@ -204,7 +211,6 @@ public class AddEditUserWindow extends Window {
             } else
                 Notification.show(WRONG_DATA, Notification.Type.ERROR_MESSAGE);
         });
-
         cancelWindowButton.addClickListener(event -> super.close());
     }
 
@@ -217,6 +223,7 @@ public class AddEditUserWindow extends Window {
         newAddress.setStreet(streetField.getValue());
         newAddress.setNumberOfBuilding(Integer.parseInt(numberOfBuildingField.getValue()));
         newAddress.setPostalCode(postalCodeField.getValue());
+
 
         User newUser = new User();
         newUser.setPesel(peselField.getValue());

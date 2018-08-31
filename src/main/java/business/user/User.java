@@ -43,7 +43,7 @@ public class User {
     @JoinColumn(name = "adres_id", referencedColumnName = "adres_id", unique = true)
     private Address address;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "uzytkownik_grupa",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "grupa_id", referencedColumnName = "grupa_id"))
