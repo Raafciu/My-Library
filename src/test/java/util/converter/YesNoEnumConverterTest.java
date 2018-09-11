@@ -4,8 +4,8 @@ import org.junit.Test;
 import util.enums.YesNoEnum;
 
 import static org.junit.Assert.assertEquals;
-import static util.enums.YesNoEnum.NO;
-import static util.enums.YesNoEnum.YES;
+import static util.enums.YesNoEnum.NIE;
+import static util.enums.YesNoEnum.TAK;
 
 public class YesNoEnumConverterTest {
 
@@ -18,10 +18,10 @@ public class YesNoEnumConverterTest {
         String expectedValueYes = "Y";
         String expectedValueNo = "N";
 
-        String value = testConverter.convertToDatabaseColumn(YES);
+        String value = testConverter.convertToDatabaseColumn(TAK);
         assertEquals(expectedValueYes, value);
 
-        value = testConverter.convertToDatabaseColumn(NO);
+        value = testConverter.convertToDatabaseColumn(NIE);
         assertEquals(expectedValueNo, value);
     }
 
@@ -30,10 +30,10 @@ public class YesNoEnumConverterTest {
     public void shouldConvertStringToEnumTest() {
 
         YesNoEnum value = testConverter.convertToEntityAttribute("Y");
-        assertEquals(YES, value);
+        assertEquals(TAK, value);
 
         value = testConverter.convertToEntityAttribute("N");
-        assertEquals(NO, value);
+        assertEquals(NIE, value);
     }
 
     @Test(expected = IllegalArgumentException.class)
