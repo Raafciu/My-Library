@@ -11,8 +11,10 @@ public class UserLayout extends VerticalLayout {
 
     private final UserPresenter userPresenter;
 
+    private VerticalLayout containerLayout;
     private HorizontalLayout buttonLayout;
-    private VerticalLayout layout;
+    private HorizontalLayout horizontalContainerLayout;
+    private HorizontalLayout menuLayout;
 
     private AddEditUserWindow window;
     private UserTable userTable;
@@ -39,12 +41,14 @@ public class UserLayout extends VerticalLayout {
         buttonLayout.addComponents(persistButton, mergeButton, removeButton);
         buttonLayout.setMargin(true);
         buttonLayout.setSpacing(true);
-        layout = new VerticalLayout();
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        layout.addComponents(buttonLayout, userTable);
-        layout.setComponentAlignment(userTable, Alignment.MIDDLE_CENTER);
-        addComponent(layout);
+        containerLayout = new VerticalLayout();
+        containerLayout.setMargin(true);
+        containerLayout.setSpacing(true);
+        containerLayout.addComponents(buttonLayout, userTable);
+        containerLayout.setComponentAlignment(userTable, Alignment.MIDDLE_CENTER);
+        addComponent(containerLayout);
+
+
     }
 
     private void addListeners() {

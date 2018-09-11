@@ -16,6 +16,8 @@ import util.validator.user.AgeValidator;
 import util.validator.user.NameValidator;
 import util.validator.user.PeselValidator;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,7 @@ public class AddEditUserWindow extends Window {
     List<Role> roleList;
     List<Group> groupList;
     OptionGroup optionGroup;
+    List<Group> selectedGroupList;
 
     private Button cancelWindowButton;
     private Button confirmWindowButton;
@@ -113,6 +116,7 @@ public class AddEditUserWindow extends Window {
         roleComboBox = new ComboBox("Rola");
         roleComboBox.addItems(roleList);
         roleList.forEach(role -> roleComboBox.setItemCaption(role, role.getRoleName()));
+
 
         groupList = userPresenter.getAllGroups();
         optionGroup = new OptionGroup("Grupy");
@@ -212,6 +216,15 @@ public class AddEditUserWindow extends Window {
                 Notification.show(WRONG_DATA, Notification.Type.ERROR_MESSAGE);
         });
         cancelWindowButton.addClickListener(event -> super.close());
+
+        optionGroup.addValueChangeListener(event -> {
+            selectedGroupList = new ArrayList<>();
+            Collection selectedItems = (Collection) event.getProperty().getValue();
+
+            for (Object selectedItem : selectedItems) {
+                selectedGroupList.add((Group) selectedItem);
+            }
+        });
     }
 
 
@@ -224,7 +237,6 @@ public class AddEditUserWindow extends Window {
         newAddress.setNumberOfBuilding(Integer.parseInt(numberOfBuildingField.getValue()));
         newAddress.setPostalCode(postalCodeField.getValue());
 
-
         User newUser = new User();
         newUser.setPesel(peselField.getValue());
         newUser.setFirstName(firstNameField.getValue());
@@ -233,7 +245,7 @@ public class AddEditUserWindow extends Window {
         newUser.setPosition((Position) positionComboBox.getValue());
         newUser.setRole((Role) roleComboBox.getValue());
         newUser.setAddress(newAddress);
-
+        newUser.setGroup(selectedGroupList);
         return newUser;
     }
 
@@ -249,7 +261,7 @@ public class AddEditUserWindow extends Window {
         user.getAddress().setStreet(streetField.getValue());
         user.getAddress().setNumberOfBuilding(Integer.parseInt(numberOfBuildingField.getValue()));
         user.getAddress().setPostalCode(postalCodeField.getValue());
-
+        user.setGroup(selectedGroupList);
         return user;
     }
 
