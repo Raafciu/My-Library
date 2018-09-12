@@ -7,8 +7,11 @@ import com.vaadin.cdi.CDIViewProvider;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import presentation.page.BookPage;
 import presentation.page.UserPage;
 import util.constans.BibliotekaUtil;
 
@@ -26,57 +29,54 @@ public class BibliotekaUI extends UI {
     private Navigator navigator;
 
     private VerticalLayout layout;
+    private Button userButton;
+    private Button bookButton;
 
     @Override
     protected void init(VaadinRequest request) {
-        layout = new VerticalLayout();
-        layout.setSpacing(true);
-        setContent(layout);
+        initComponents();
+        initLayout();
+        addListeners();
+    }
+
+    private void userNavigator() {
         initNavigator();
+        navigator.addView(UserPage.VIEW_ID, new UserPage());
+        UI.getCurrent().setNavigator(navigator);
+        UI.getCurrent().getNavigator().navigateTo(UserPage.VIEW_ID);
+    }
+
+    private void bookNavigator() {
+        initNavigator();
+        navigator.addView(BookPage.VIEW_ID, new BookPage());
+        UI.getCurrent().setNavigator(navigator);
+        UI.getCurrent().getNavigator().navigateTo(BookPage.VIEW_ID);
     }
 
     private void initNavigator() {
         viewDisplay = new ComponentContainerViewDisplay(layout);
         navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addProvider(cdiViewProvider);
-        navigator.addView(UserPage.VIEW_ID, new UserPage());
+    }
 
-        UI.getCurrent().setNavigator(navigator);
-        UI.getCurrent().getNavigator().navigateTo(UserPage.VIEW_ID);
+    private void initLayout() {
+        layout = new VerticalLayout();
+        layout.setSpacing(true);
+        layout.setMargin(true);
+        layout.addComponents(userButton, bookButton);
+        layout.setComponentAlignment(userButton, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(bookButton, Alignment.MIDDLE_CENTER);
+        setContent(layout);
+    }
+
+    private void initComponents() {
+
+        userButton = new Button("Strefa dla Pracownika");
+        bookButton = new Button("Biblioteka");
+    }
+
+    private void addListeners() {
+        userButton.addClickListener(event -> userNavigator());
+        bookButton.addClickListener(event -> bookNavigator());
     }
 }
-
-
-//
-//private int clickCounter = 0;
-//    private Label clickCounterLabel;
-//
-//    VerticalLayout layout = new VerticalLayout();
-//        layout.setMargin(true);
-//        layout.setSpacing(true);
-//    setContent(layout);
-//
-//        layout.addComponent(new Label("Hello World!"));
-//        layout.addComponent(new Label("Greetings from server."));
-//        layout.addComponent(new Label("I have "
-//                                              + Runtime.getRuntime().availableProcessors()
-//                + " processors and "
-//                        + (Runtime.getRuntime().totalMemory() / 1000000)
-//            + " MB total memory."));
-//
-//    Button button = new Button("Click Me");
-//        button.addClickListener((Button.ClickListener) event -> {
-//        clickCounter++;
-//        clickCounterLabel.setValue("Clicks: " + clickCounter);
-//        Notification.show("Thank you for clicking.");
-//    });
-//
-//    Button encjaButton = new Button("Pobierz użytkowników");
-//        encjaButton.addClickListener(clickEvent -> {
-//        List<User> userList = userPresenter.();
-//        userList.forEach(user -> layout.addComponent(new Label(user.toString())));
-//    });
-//
-//        layout.addComponents(button, encjaButton);
-//        layout.addComponent(clickCounterLabel = new Label("Clicks: 0"));
-//}

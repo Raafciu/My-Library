@@ -5,26 +5,28 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-//@Stateless
+@Stateless
 public class BookDAO{
 
-//    @PersistenceContext(unitName = "biblioPU")
+    @PersistenceContext(unitName = "biblioPU")
     private EntityManager entityManager;
+
+    public List<Book> getAll() {
+        return entityManager.createQuery("FROM Book", Book.class).getResultList();
+    }
 
     public void persist(Book book) {
         entityManager.persist(book);
         entityManager.flush();
     }
 
-    public List<Book> getAll() {
-        return entityManager.createQuery("From Book", Book.class).getResultList();
+    public void merge(Book book) {
+        entityManager.merge(book);
+        entityManager.flush();
     }
 
     public void remove(Book book) {
-        entityManager.remove(book);
-    }
-
-    public void merge(Book book) {
-        entityManager.merge(book);
+        entityManager.remove(entityManager.contains(book) ? book : entityManager.merge(book));
+        entityManager.flush();
     }
 }

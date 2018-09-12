@@ -2,8 +2,8 @@ package util.enums;
 
 public enum YesNoEnum {
 
-    YES("Y", "Yes"),
-    NO("N", "No");
+    TAK("T", "TAK"),
+    NIE("N", "NIE");
 
     private final String databaseValue;
     private final String readableValue;

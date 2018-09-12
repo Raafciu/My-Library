@@ -5,8 +5,8 @@ import util.enums.YesNoEnum;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import static util.enums.YesNoEnum.NO;
-import static util.enums.YesNoEnum.YES;
+import static util.enums.YesNoEnum.NIE;
+import static util.enums.YesNoEnum.TAK;
 
 @Converter
 public class YesNoEnumConverter implements AttributeConverter<YesNoEnum, String> {
@@ -14,9 +14,9 @@ public class YesNoEnumConverter implements AttributeConverter<YesNoEnum, String>
     @Override
     public String convertToDatabaseColumn(YesNoEnum attribute) {
         switch (attribute) {
-            case YES:
-                return "Y";
-            case NO:
+            case TAK:
+                return "T";
+            case NIE:
                 return "N";
             default:
                 throw new IllegalArgumentException("Unknown " + attribute);
@@ -26,10 +26,10 @@ public class YesNoEnumConverter implements AttributeConverter<YesNoEnum, String>
     @Override
     public YesNoEnum convertToEntityAttribute(String dbData) {
         switch (dbData) {
-            case "Y":
-                return YES;
+            case "T":
+                return TAK;
             case "N":
-                return NO;
+                return NIE;
             default:
                 throw new IllegalArgumentException("Unknown " + dbData);
         }
