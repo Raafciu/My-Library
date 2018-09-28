@@ -9,11 +9,11 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import control.user.UserPresenter;
+import util.validator.NameValidator;
 import util.validator.address.AddressValidator;
 import util.validator.address.NumberOfBuildingValidator;
 import util.validator.address.PostalCodeValidator;
 import util.validator.user.AgeValidator;
-import util.validator.user.NameValidator;
 import util.validator.user.PeselValidator;
 
 import java.util.ArrayList;
@@ -208,7 +208,7 @@ public class AddEditUserWindow extends Window {
                         userPresenter.merge(user);
                     }
                     this.close();
-                    Notification.show("Dziekujemy za wypelnienie formularza!");
+                    Notification.show("Dziekujemy za wypelnienie formularza!", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception e) {
                     Notification.show("Błąd podczas przetwarzania : " + e.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
@@ -229,7 +229,6 @@ public class AddEditUserWindow extends Window {
 
 
     private User prepareNewUser() {
-
         Address newAddress = new Address();
         newAddress.setCountry(countryField.getValue());
         newAddress.setCity(cityField.getValue());
